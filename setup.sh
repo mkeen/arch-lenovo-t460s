@@ -27,7 +27,7 @@ parted /dev/${DISK} --script mkpart primary ext4 200GiB 299GiB
 mkfs.ext4 /dev/${DISK}4
 
 # Home/mkeen Partition
-parted /dev/${DISK} --script mkpart primary ext4 300GiB 1TiB
+parted /dev/${DISK} --script mkpart primary ext4 300GiB 100%
 mkfs.ext4 /dev/${DISK}5
 
 # Mount All
