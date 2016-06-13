@@ -5,29 +5,29 @@ DISK=sda
 timedatectl set-ntp true
 
 # Prepare Partitions
-parted --script select /dev/${DISK}
+parted /dev/${DISK} --script mklabel msdos
 # todo, delete existing
 
 # Boot Partition
-parted --script mkpart ESP fat32 1MiB 513MiB
-parted --script disk_set boot on
+parted /dev/${DISK} --script mkpart ESP fat32 1MiB 513MiB
+parted /dev/${DISK} --script disk_set boot on
 mkfs.fat -F32 /dev/${DISK}1
 
 # Swap Partition
-parted --script mkpart primary linux-swap 513MiB 99GiB
+parted /dev/${DISK} --script mkpart primary linux-swap 513MiB 99GiB
 mkswap /dev/${DISK}2
 swapon /dev/${DISK}2
 
 # Var Partition
-parted --script mkpart primary ext4 100GiB 199GiB
+parted /dev/${DISK} --script mkpart primary ext4 100GiB 199GiB
 mkfs.ext4 /dev/${DISK}3
 
 # / Partition
-parted --script mkpart primary ext4 200GiB 299GiB
+parted /dev/${DISK} --script mkpart primary ext4 200GiB 299GiB
 mkfs.ext4 /dev/${DISK}4
 
 # Home/mkeen Partition
-parted --script mkpart primary ext4 300GiB 1TiB
+parted /dev/${DISK} --script mkpart primary ext4 300GiB 1TiB
 mkfs.ext4 /dev/${DISK}5
 
 # Mount All
