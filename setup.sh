@@ -3,6 +3,7 @@ DISK=sda
 
 # Prep
 timedatectl set-ntp true
+pacman --noconfirm -S cryptsetup pam_mount
 
 # Prepare Partitions
 parted /dev/${DISK} --script mklabel msdos
@@ -14,30 +15,40 @@ parted /dev/${DISK} --script disk_set boot on
 mkfs.fat -F32 /dev/${DISK}1
 
 # Swap Partition
-parted /dev/${DISK} --script mkpart primary linux-swap 513MiB 99GiB
-mkswap /dev/${DISK}2
-swapon /dev/${DISK}2
+parted /dev/${DISK} --script mkpart primary linux-swap 513MiB 49GiB
+cryptsetup open --type plain /dev/${DISK}2 container --key-file /dev/random
+mkswap /dev/mapper/${DISK}2
+swapon /dev/mapper/${DISK}2
+
+# Tmp Partition
+parted /dev/${DISK} --script mkpart primary ext4 49GiB 99GiB
+cryptsetup open --type plain /dev/${DISK}3 container --key-file /dev/random
+mkfx.ext4 /dev/mapper/${DISK}3
 
 # Var Partition
 parted /dev/${DISK} --script mkpart primary ext4 100GiB 199GiB
-mkfs.ext4 /dev/${DISK}3
+cryptsetup open /dev/${DISK}4
+mkfs.ext4 /dev/mapper/${DISK}4
 
 # / Partition
 parted /dev/${DISK} --script mkpart primary ext4 200GiB 299GiB
-mkfs.ext4 /dev/${DISK}4
-
-# Home/mkeen Partition
-parted /dev/${DISK} --script mkpart primary ext4 300GiB 100%
 mkfs.ext4 /dev/${DISK}5
 
+# Home Folder (/home/mkeen) Partition
+parted /dev/${DISK} --script mkpart primary ext4 300GiB 100%
+cryptsetup open /dev/${DISK}6
+mkfs.ext4 /dev/mapper/${DISK}6
+
+
+
 # Mount All
-mount /dev/${DISK}4 /mnt
+mount /dev/${DISK}5 /mnt
 mkdir -p /mnt/boot
 mount /dev/${DISK}1 /mnt/boot
 mkdir -p /mnt/var
 mount /dev/${DISK}3 /mnt/var
 mkdir -p /mnt/home
-mount /dev/${DISK}5 /mnt/home
+mount /dev/${DISK}6 /mnt/home
 
 # Prepare Mirrors
 pacman -Sy reflector
@@ -74,15 +85,18 @@ chown root /etc/sudoers
 echo "resin" > /etc/hostname
 
 # Install Base Customizations
-# 1. Yaourt
 echo "
 [archlinuxfr]
 SigLevel = Never
 Server = http://repo.archlinux.fr/\$arch
 " >> /etc/pacman.conf
-pacman -Sy
+pacman -Syy --noconfirm
 pacman -S yaourt --noconfirm
-yaourt --noconfirm -S reflector gnome NetworkManager gdm
+
+yaourt --noconfirm -S reflector gnome NetworkManager gdm pam_mount
+
+
+
 systemctl enable gdm
 exit
 reboot
