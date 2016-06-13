@@ -65,7 +65,7 @@ mkinitcpio -p linux
 efibootmgr -v
 
 # Create User
-useradd mkeen --create-home --password \$1\$rzZnSG19\$aA7Gc1wTSkVmk0nBjPB6I.
+useradd mkeen --create-home --password \$1\$o4fUysim\$.ije9dcXJAbmiU.M3OhPg1
 cp sudoers /etc/sudoers
 chmod 0440 /etc/sudoers
 chown root /etc/sudoers
@@ -82,4 +82,7 @@ Server = http://repo.archlinux.fr/\$arch
 " >> /etc/pacman.conf
 pacman -Sy
 pacman -S yaourt --noconfirm
-yaourt --noconfirm -S reflector gnome NetworkManager
+yaourt --noconfirm -S reflector gnome NetworkManager gdm
+systemctl enable gdm
+exit
+reboot
