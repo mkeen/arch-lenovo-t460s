@@ -16,20 +16,20 @@ mkfs.fat -F32 /dev/${DISK}1
 
 # Encrypted Swap Partition
 parted /dev/${DISK} --script mkpart primary linux-swap 513MiB 10000MiB
-cryptsetup -v --cipher aes-xts-plain64 --key-size 256 --hash sha256 --iter-time 2000 --use-urandom --batch-mode luksFormat ${DISK}2
+cryptsetup -v --cipher aes-xts-plain64 --key-size 256 --hash sha256 --iter-time 2000 --use-urandom --batch-mode luksFormat /dev/${DISK}2
 cryptsetup -v open /dev/${DISK}2 swap
 mkswap /dev/mapper/swap
 swapon /dev/mapper/swap
 
 # Encrypted Tmp Partition
 parted /dev/${DISK} --script mkpart primary ext4 10001MiB 20000MiB
-cryptsetup -v --cipher aes-xts-plain64 --key-size 256 --hash sha256 --iter-time 2000 --verify-passphrase --batch-mode luksFormat ${DISK}3
+cryptsetup -v --verify-passphrase --batch-mode luksFormat /dev/${DISK}3
 cryptsetup -v open /dev/${DISK}3 tmp
 mkfs.ext4 /dev/mapper/tmp
 
 # Encrypted Var Partition
 parted /dev/${DISK} --script mkpart primary ext4 20001MiB 50000MiB
-cryptsetup -v --cipher aes-xts-plain64 --key-size 256 --hash sha256 --iter-time 2000 --verify-passphrase --batch-mode luksFormat ${DISK}4
+cryptsetup -v --verify-passphrase --batch-mode luksFormat /dev/${DISK}4
 cryptsetup -v open /dev/${DISK}4 var
 mkfs.ext4 /dev/mapper/var
 
@@ -39,7 +39,7 @@ mkfs.ext4 /dev/${DISK}5
 
 # Encrypted Home Folder (/home/mkeen) Partition
 parted /dev/${DISK} --script mkpart primary ext4 80001MiB 100%
-cryptsetup -v --cipher aes-xts-plain64 --key-size 256 --hash sha256 --iter-time 2000 --verify-passphrase --batch-mode luksFormat ${DISK}6
+cryptsetup -v --verify-passphrase --batch-mode luksFormat ${DISK}6
 cryptsetup -v open /dev/${DISK}6 home
 mkfs.ext4 /dev/mapper/home
 
