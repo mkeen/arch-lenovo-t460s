@@ -10,7 +10,6 @@ hwclock --systohc --utc
 
 # Configure Boot
 pacman -S intel-ucode --noconfirm
-cp skel/etc/mkinitcpio.conf /etc/mkinitcpio.conf
 mkinitcpio -p linux
 efibootmgr -d /dev/${DISK} -p 1 -c -L "Arch Linux" -l /vmlinuz-linux -u "i915.preliminary_hw_support=1 root=/dev/${DISK}5 rw initrd=/intel-ucode.img initrd=/initramfs-linux.img"
 

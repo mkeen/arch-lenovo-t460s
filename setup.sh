@@ -64,7 +64,8 @@ cp skel/etc/crypttab /mnt/etc
 cp skel/etc/security/pam_mount.conf.xml /mnt/etc/security
 cp skel/etc/pam.d/gdm-password /mnt/etc/pam.d
 cp skel/etc/pam.d/system-auth /mnt/etc/pam.d
-cp configure.sh /mnt/tmp
+cp configure.sh /mnt/etc
+cp skel/etc/mkinitcpio.conf /etc/mkinitcpio.conf
 # Probably needs permissions fixes inside of configure.sh's first lines
 
-arch-chroot /mnt /bin/bash "sh /tmp/configure.sh"
+arch-chroot /mnt sh /etc/configure.sh
