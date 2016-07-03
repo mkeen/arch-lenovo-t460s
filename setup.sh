@@ -23,7 +23,7 @@ swapon /dev/mapper/swap
 
 # Encrypted Tmp Partition
 parted /dev/${DISK} --script mkpart primary ext4 10001MiB 20000MiB
-cryptsetup -v --verify-passphrase --batch-mode luksFormat /dev/${DISK}3
+cryptsetup -v --cipher aes-xts-plain64 --key-size 256 --hash sha256 --iter-time 2000 --use-urandom --batch-mode luksFormat /dev/${DISK}3
 cryptsetup -v open /dev/${DISK}3 tmp
 mkfs.ext4 /dev/mapper/tmp
 
@@ -39,7 +39,7 @@ mkfs.ext4 /dev/${DISK}5
 
 # Encrypted Home Folder (/home/mkeen) Partition
 parted /dev/${DISK} --script mkpart primary ext4 80001MiB 100%
-cryptsetup -v --verify-passphrase --batch-mode luksFormat ${DISK}6
+cryptsetup -v --verify-passphrase --batch-mode luksFormat /dev/${DISK}6
 cryptsetup -v open /dev/${DISK}6 home
 mkfs.ext4 /dev/mapper/home
 
@@ -69,8 +69,9 @@ cp skel/etc/security/pam_mount.conf.xml /mnt/etc/security
 cp skel/etc/pam.d/gdm-password /mnt/etc/pam.d
 cp skel/etc/pam.d/system-auth /mnt/etc/pam.d
 cp configure.sh /mnt/etc
-cp skel/etc/mkinitcpio.conf /etc/mkinitcpio.conf
+cp skel/etc/mkinitcpio.conf /mnt/etc
 cp skel/etc/sudoers /etc
+cp skel/lib/mkinitcpio/hooks/openswap /mnt/lib/mkinitcpio/hooks
 # Probably needs permissions fixes inside of configure.sh's first lines
 
 arch-chroot /mnt sh /etc/configure.sh
