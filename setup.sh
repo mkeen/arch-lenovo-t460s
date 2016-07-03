@@ -19,9 +19,6 @@ parted /dev/${DISK} --script mkpart primary ext4 513MiB 10000MiB
 
 # Encrypted Tmp Partition
 parted /dev/${DISK} --script mkpart primary ext4 10001MiB 20000MiB
-#cryptsetup -v --cipher aes-xts-plain64 --key-size 256 --hash sha256 --iter-time 2000 --use-urandom --batch-mode luksFormat /dev/${DISK}3
-#cryptsetup -v open /dev/${DISK}3 tmp
-#mkfs.ext4 /dev/mapper/tmp
 
 # Encrypted Var Partition
 parted /dev/${DISK} --script mkpart primary ext4 20001MiB 50000MiB
