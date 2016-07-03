@@ -70,3 +70,6 @@ cp skel/etc/sudoers /etc
 # Probably needs permissions fixes inside of configure.sh's first lines
 
 arch-chroot /mnt sh /etc/configure.sh
+
+# Once the work in arch-chroot completes, return back to the script, and reboot
+reboot

@@ -59,4 +59,4 @@ exenv rehash
 
 systemctl enable gdm
 exit
-reboot
+
