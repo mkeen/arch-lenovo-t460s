@@ -16,8 +16,9 @@ mkfs.fat -F32 /dev/${DISK}1
 
 # Encrypted Swap Partition
 parted /dev/${DISK} --script mkpart primary linux-swap 513MiB 10000MiB
-cryptsetup open --type plain /dev/${DISK}2 swap --key-file /dev/random
 mkswap /dev/mapper/swap
+cryptsetup -v --cipher aes-xts-plain64 --key-size 256 --hash sha256 --iter-time 2000 --use-urandom --verify-passphrase --batch-mode luksFormat ${DISK}2
+cryptsetup -v open /dev/sda2 swap
 swapon /dev/mapper/swap
 
 # Encrypted Tmp Partition
