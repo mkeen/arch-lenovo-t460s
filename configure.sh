@@ -15,7 +15,6 @@ efibootmgr -d /dev/${DISK} -p 1 -c -L "Arch Linux" -l /vmlinuz-linux -u "i915.pr
 
 # Create User
 useradd mkeen --create-home --password \$1\$o4fUysim\$.ije9dcXJAbmiU.M3OhPg1
-cp sudoers /etc/sudoers
 chmod 0440 /etc/sudoers
 chown root /etc/sudoers
 

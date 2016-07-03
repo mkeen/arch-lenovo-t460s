@@ -66,6 +66,7 @@ cp skel/etc/pam.d/gdm-password /mnt/etc/pam.d
 cp skel/etc/pam.d/system-auth /mnt/etc/pam.d
 cp configure.sh /mnt/etc
 cp skel/etc/mkinitcpio.conf /etc/mkinitcpio.conf
+cp skel/etc/sudoers /etc
 # Probably needs permissions fixes inside of configure.sh's first lines
 
 arch-chroot /mnt sh /etc/configure.sh
