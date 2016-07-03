@@ -33,29 +33,7 @@ Server = http://repo.archlinux.fr/\$arch
 pacman -Syy --noconfirm
 pacman -S yaourt --noconfirm
 
-yaourt --noconfirm -S pam_mount gnome emacs nvm-git git wget unzip
-
-# Configure Erlang Version Manager
-git clone https://github.com/robisonsantos/evm.git
-cd evm
-./install
-cd ../
-rm -rf evm
-echo "source $HOME/.evm/scripts/evm" > ~/.bashrc
-exec $SHELL
-evm install OTP_18.3
-evm default OTP_18.3
-
-# Configure Elixir Version Manager
-git clone git://github.com/mururu/exenv.git ~/.exenv
-echo 'export PATH="$HOME/.exenv/bin:$PATH"' >> ~/.bashrc
-echo 'eval "$(exenv init -)"' >> ~/.bashrc
-exec $SHELL
-wget https://github.com/elixir-lang/elixir/archive/v1.3.1.zip
-unzip v1.3.1.zip
-mv elixir-1.3.1/ ~/.exenv/versions/1.3.1
-exenv global 1.3.1
-exenv rehash
+yaourt --noconfirm -S gnome emacs nvm-git git wget unzip
 
 systemctl enable gdm
 exit

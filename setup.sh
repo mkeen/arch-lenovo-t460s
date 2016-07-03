@@ -55,7 +55,7 @@ pacman --noconfirm -Sy reflector
 reflector --verbose --country 'United States' -l 200 -p http --sort rate --save /etc/pacman.d/mirrorlist
 
 # Pacstrap
-pacstrap /mnt base base-devel
+pacstrap /mnt base base-devel pam_mount
 genfstab -U /mnt >> /mnt/etc/fstab
 
 # Skel files
