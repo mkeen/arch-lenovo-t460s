@@ -37,16 +37,18 @@ mkfs.ext4 /dev/${DISK}5
 # Encrypted Home Folder (/home/mkeen) Partition
 parted /dev/${DISK} --script mkpart primary ext4 80001MiB 100%
 cryptsetup open --type plain /dev/${DISK}6 home
-mkfs.ext4 /dev/mapper/${DISK}6
+mkfs.ext4 /dev/mapper/home
 
 # Mount All
 mount /dev/${DISK}5 /mnt
 mkdir -p /mnt/boot
 mount /dev/${DISK}1 /mnt/boot
 mkdir -p /mnt/var
-mount /dev/${DISK}3 /mnt/var
+mount /dev/mapper/var /mnt/var
 mkdir -p /mnt/home
-mount /dev/${DISK}6 /mnt/home
+mount /dev/mapper/home /mnt/home
+mkdir -p /mnt/tmp
+mount /dev/mapper/tmp /mnt/tmp
 
 # Prepare Mirrors
 pacman -Sy reflector
