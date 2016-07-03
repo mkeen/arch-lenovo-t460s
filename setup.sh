@@ -44,8 +44,6 @@ mkdir -p /mnt/var
 mount /dev/mapper/var /mnt/var
 mkdir -p /mnt/home
 mount /dev/mapper/home /mnt/home
-#mkdir -p /mnt/tmp
-#mount /dev/mapper/tmp /mnt/tmp
 
 # Prepare Mirrors
 pacman --noconfirm -Sy reflector
