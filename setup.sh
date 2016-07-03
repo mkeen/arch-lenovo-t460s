@@ -59,22 +59,20 @@ pacman --noconfirm -Sy reflector
 reflector --verbose --country 'United States' -l 200 -p http --sort rate --save /etc/pacman.d/mirrorlist
 
 # Pacstrap
-pacstrap /mnt base base-devel pam_mount
+pacstrap /mnt base base-devel
 genfstab -U /mnt >> /mnt/etc/fstab
 
 # Skel files
 cp skel/etc/unsecure.key /mnt/etc
 cp skel/etc/crypttab /mnt/etc
-cp skel/etc/security/pam_mount.conf.xml /mnt/etc/security
+#cp skel/etc/security/pam_mount.conf.xml /mnt/etc/security
 cp skel/etc/pam.d/gdm-password /mnt/etc/pam.d
 cp skel/etc/pam.d/system-auth /mnt/etc/pam.d
 cp configure.sh /mnt/etc
 cp skel/etc/mkinitcpio.conf /mnt/etc
 cp skel/etc/sudoers /etc
-# Todo: Fix directory structure typo at some point
-cp skel/lib/mkinitcpio/hooks/openswap /mnt/lib/initcpio/hooks
-cp skel/lib/mkinitcpio/install/openswap /mnt/lib/initcpio/install
-# Probably needs permissions fixes inside of configure.sh's first lines
+cp skel/lib/initcpio/hooks/openswap /mnt/lib/initcpio/hooks
+cp skel/lib/initcpio/install/openswap /mnt/lib/initcpio/install
 
 arch-chroot /mnt sh /etc/configure.sh
 

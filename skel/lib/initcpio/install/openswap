@@ -5,6 +5,6 @@ build ()
 help ()
 {
 cat<<HELPEOF
-  This opens the swap encrypted partition /dev/<device> in /dev/mapper/swapDevice
+  This opens the swap encrypted partition /dev/sda2 in /dev/mapper/swap
 HELPEOF
 }
