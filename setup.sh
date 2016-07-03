@@ -51,7 +51,7 @@ mkdir -p /mnt/tmp
 mount /dev/mapper/tmp /mnt/tmp
 
 # Prepare Mirrors
-pacman -Sy reflector
+pacman --noconfirm -Sy reflector
 reflector --verbose --country 'United States' -l 200 -p http --sort rate --save /etc/pacman.d/mirrorlist
 
 # Pacstrap
