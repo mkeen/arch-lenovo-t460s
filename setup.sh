@@ -23,7 +23,7 @@ swapon /dev/mapper/swap
 # Encrypted Tmp Partition
 parted /dev/${DISK} --script mkpart primary ext4 10001MiB 20000MiB
 cryptsetup open --type plain /dev/${DISK}3 tmp --key-file /dev/random
-mkfx.ext4 /dev/mapper/tmp
+mkfs.ext4 /dev/mapper/tmp
 
 # Encrypted Var Partition
 parted /dev/${DISK} --script mkpart primary ext4 20001MiB 50000MiB
