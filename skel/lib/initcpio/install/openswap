@@ -1,0 +1,10 @@
+build ()
+{
+   add_runscript
+}
+help ()
+{
+cat<<HELPEOF
+  This opens the swap encrypted partition /dev/<device> in /dev/mapper/swapDevice
+HELPEOF
+}

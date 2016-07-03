@@ -71,7 +71,9 @@ cp skel/etc/pam.d/system-auth /mnt/etc/pam.d
 cp configure.sh /mnt/etc
 cp skel/etc/mkinitcpio.conf /mnt/etc
 cp skel/etc/sudoers /etc
-cp skel/lib/mkinitcpio/hooks/openswap /mnt/lib/mkinitcpio/hooks
+# Todo: Fix directory structure typo at some point
+cp skel/lib/mkinitcpio/hooks/openswap /mnt/lib/initcpio/hooks
+cp skel/lib/mkinitcpio/install/openswap /mnt/lib/initcpio/install
 # Probably needs permissions fixes inside of configure.sh's first lines
 
 arch-chroot /mnt sh /etc/configure.sh
