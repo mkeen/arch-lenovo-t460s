@@ -22,6 +22,9 @@ chown root /etc/sudoers
 # Set Hostname
 echo "resin" > /etc/hostname
 
+# Set Root Password
+passwd
+
 # Install Base Customizations
 echo "
 [archlinuxfr]
