@@ -15,18 +15,13 @@ parted /dev/${DISK} --script set 1 boot on
 mkfs.fat -F32 /dev/${DISK}1
 
 # Encrypted Swap Partition
-parted /dev/${DISK} --script mkpart primary linux-swap 513MiB 10000MiB
-cryptsetup -v --batch-mode --type luks --key-file=/dev/urandom luksFormat /dev/sda2 swap
-cryptsetup -v --batch-mode --type luks open /dev/${DISK}2 swap
-#mkfs.ext2 -L swap /dev/${DISK}2
-mkswap /dev/mapper/swap
-swapon /dev/mapper/swap
+parted /dev/${DISK} --script mkpart primary ext4 513MiB 10000MiB
 
 # Encrypted Tmp Partition
 parted /dev/${DISK} --script mkpart primary ext4 10001MiB 20000MiB
-cryptsetup -v --cipher aes-xts-plain64 --key-size 256 --hash sha256 --iter-time 2000 --use-urandom --batch-mode luksFormat /dev/${DISK}3
-cryptsetup -v open /dev/${DISK}3 tmp
-mkfs.ext4 /dev/mapper/tmp
+#cryptsetup -v --cipher aes-xts-plain64 --key-size 256 --hash sha256 --iter-time 2000 --use-urandom --batch-mode luksFormat /dev/${DISK}3
+#cryptsetup -v open /dev/${DISK}3 tmp
+#mkfs.ext4 /dev/mapper/tmp
 
 # Encrypted Var Partition
 parted /dev/${DISK} --script mkpart primary ext4 20001MiB 50000MiB
@@ -52,8 +47,8 @@ mkdir -p /mnt/var
 mount /dev/mapper/var /mnt/var
 mkdir -p /mnt/home
 mount /dev/mapper/home /mnt/home
-mkdir -p /mnt/tmp
-mount /dev/mapper/tmp /mnt/tmp
+#mkdir -p /mnt/tmp
+#mount /dev/mapper/tmp /mnt/tmp
 
 # Prepare Mirrors
 pacman --noconfirm -Sy reflector
@@ -71,9 +66,8 @@ cp skel/etc/pam.d/gdm-password /mnt/etc/pam.d
 cp skel/etc/pam.d/system-auth /mnt/etc/pam.d
 cp configure.sh /mnt/etc
 cp skel/etc/mkinitcpio.conf /mnt/etc
-cp skel/etc/sudoers /etc
-cp skel/lib/initcpio/hooks/openswap /mnt/lib/initcpio/hooks
-cp skel/lib/initcpio/install/openswap /mnt/lib/initcpio/install
+cp skel/etc/sudoers /mnt/etc
+cp skel/etc/openswap.conf /etc
 
 arch-chroot /mnt sh /etc/configure.sh
 

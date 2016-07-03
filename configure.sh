@@ -13,8 +13,6 @@ pacman -S intel-ucode efibootmgr --noconfirm
 mkinitcpio -p linux
 efibootmgr -d /dev/${DISK} -p 1 -c -L "Arch Linux" -l /vmlinuz-linux -u "i915.preliminary_hw_support=1 root=/dev/${DISK}5 rw initrd=/intel-ucode.img initrd=/initramfs-linux.img"
 efibootmgr
-echo "Boot configured"
-sleep 10
 
 # Create User
 useradd mkeen --create-home --password \$1\$o4fUysim\$.ije9dcXJAbmiU.M3OhPg1
