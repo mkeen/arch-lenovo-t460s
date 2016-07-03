@@ -3,6 +3,7 @@ DISK=sda
 
 # Prep
 timedatectl set-ntp true
+pacman -Syy
 pacman --noconfirm -S cryptsetup
 
 # Prepare Partitions
@@ -56,6 +57,12 @@ pacstrap /mnt base base-devel
 genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt /bin/bash
 
+cp skel/etc/crypttab /etc
+cp skel/etc/security/pam_mount.conf.xml /etc/security
+cp skel/etc/pam.d/gdm-password /etc/pam.d
+cp skel/etc/pam.d/system-auth /etc/pam.d
+# Probably needs permissions fixes
+
 # Locale
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 locale-gen
@@ -68,6 +75,7 @@ hwclock --systohc --utc
 
 # Configure Boot
 pacman -S intel-ucode --noconfirm
+cp skel/etc/mkinitcpio.conf /etc/mkinitcpio.conf
 efibootmgr -d /dev/${DISK} -p 1 -c -L "Arch Linux" -l /vmlinuz-linux -u "i915.preliminary_hw_support=1 root=/dev/${DISK}5 rw initrd=/intel-ucode.img initrd=/initramfs-linux.img"
 mkinitcpio -p linux
 efibootmgr -v
