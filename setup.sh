@@ -3,43 +3,40 @@ DISK=sda
 
 # Prep
 timedatectl set-ntp true
-pacman --noconfirm -S cryptsetup pam_mount
+pacman --noconfirm -S cryptsetup
 
 # Prepare Partitions
 parted /dev/${DISK} --script mklabel msdos
-# todo, delete existing
 
 # Boot Partition
 parted /dev/${DISK} --script mkpart ESP fat32 1MiB 513MiB
 parted /dev/${DISK} --script disk_set boot on
 mkfs.fat -F32 /dev/${DISK}1
 
-# Swap Partition
-parted /dev/${DISK} --script mkpart primary linux-swap 513MiB 49GiB
+# Encrypted Swap Partition
+parted /dev/${DISK} --script mkpart primary linux-swap 513MiB 10000MiB
 cryptsetup open --type plain /dev/${DISK}2 container --key-file /dev/random
 mkswap /dev/mapper/${DISK}2
 swapon /dev/mapper/${DISK}2
 
-# Tmp Partition
-parted /dev/${DISK} --script mkpart primary ext4 49GiB 99GiB
+# Encrypted Tmp Partition
+parted /dev/${DISK} --script mkpart primary ext4 10001MiB 20000MiB
 cryptsetup open --type plain /dev/${DISK}3 container --key-file /dev/random
 mkfx.ext4 /dev/mapper/${DISK}3
 
-# Var Partition
-parted /dev/${DISK} --script mkpart primary ext4 100GiB 199GiB
+# Encrypted Var Partition
+parted /dev/${DISK} --script mkpart primary ext4 20001MiB 50000MiB
 cryptsetup open /dev/${DISK}4
 mkfs.ext4 /dev/mapper/${DISK}4
 
 # / Partition
-parted /dev/${DISK} --script mkpart primary ext4 200GiB 299GiB
+parted /dev/${DISK} --script mkpart primary ext4 50001MiB 80000MiB
 mkfs.ext4 /dev/${DISK}5
 
 # Home Folder (/home/mkeen) Partition
-parted /dev/${DISK} --script mkpart primary ext4 300GiB 100%
+parted /dev/${DISK} --script mkpart primary ext4 80001MiB 100%
 cryptsetup open /dev/${DISK}6
 mkfs.ext4 /dev/mapper/${DISK}6
-
-
 
 # Mount All
 mount /dev/${DISK}5 /mnt
@@ -71,7 +68,7 @@ hwclock --systohc --utc
 
 # Configure Boot
 pacman -S intel-ucode --noconfirm
-efibootmgr -d /dev/${DISK} -p 1 -c -L "Arch Linux" -l /vmlinuz-linux -u "i915.preliminary_hw_support=1 root=/dev/${DISK}4 rw initrd=/intel-ucode.img initrd=/initramfs-linux.img"
+efibootmgr -d /dev/${DISK} -p 1 -c -L "Arch Linux" -l /vmlinuz-linux -u "i915.preliminary_hw_support=1 root=/dev/${DISK}5 rw initrd=/intel-ucode.img initrd=/initramfs-linux.img"
 mkinitcpio -p linux
 efibootmgr -v
 
@@ -93,9 +90,29 @@ Server = http://repo.archlinux.fr/\$arch
 pacman -Syy --noconfirm
 pacman -S yaourt --noconfirm
 
-yaourt --noconfirm -S reflector gnome NetworkManager gdm pam_mount
+yaourt --noconfirm -S pam_mount gnome emacs nvm-git git wget unzip
 
+# Configure Erlang Version Manager
+git clone https://github.com/robisonsantos/evm.git
+cd evm
+./install
+cd ../
+rm -rf evm
+echo "source $HOME/.evm/scripts/evm" > ~/.bashrc
+exec $SHELL
+evm install OTP_18.3
+evm default OTP_18.3
 
+# Configure Elixir Version Manager
+git clone git://github.com/mururu/exenv.git ~/.exenv
+echo 'export PATH="$HOME/.exenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(exenv init -)"' >> ~/.bashrc
+exec $SHELL
+wget https://github.com/elixir-lang/elixir/archive/v1.3.1.zip
+unzip v1.3.1.zip
+mv elixir-1.3.1/ ~/.exenv/versions/1.3.1
+exenv global 1.3.1
+exenv rehash
 
 systemctl enable gdm
 exit
