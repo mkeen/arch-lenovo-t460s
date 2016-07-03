@@ -66,5 +66,4 @@ cp skel/etc/openswap.conf /etc
 
 arch-chroot /mnt sh /etc/configure.sh
 
-# Once the work in arch-chroot completes, return back to the script, and reboot
 reboot

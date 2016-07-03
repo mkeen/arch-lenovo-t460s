@@ -40,6 +40,7 @@ su mkeen --command "yaourt --noconfirm -S mkinitcpio-openswap"
 
 mkinitcpio -p linux
 
+systemctl enable NetworkManager
 systemctl enable gdm
 
 exit
