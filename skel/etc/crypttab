@@ -10,7 +10,7 @@
 #       beforehand by the initramfs (/etc/mkinitcpio.conf).
 
 # <name>       <device>   <password>            <options>
-sda2           /dev/sda2  /dev/urandom          swap,cipher=aes-cbc-essiv:sha256,size=256,hash=plain
-sda3	       /dev/sda3  /dev/urandom          tmp,cipher=aes-cbc-essiv:sha256,size=256,hash=plain
-sda4           /dev/sdb4  /etc/unsecure.key     hash=plain
-sda6           /dev/sda6  /etc/unsecure.key     hash=plain
+sda2           /dev/sda2  /dev/urandom          
+sda3	       /dev/sda3  /dev/urandom          
+sda4           /dev/sdb4  
+sda6           /dev/sda6  
