@@ -31,10 +31,9 @@ SigLevel = Never
 Server = http://repo.archlinux.fr/\$arch
 " >> /etc/pacman.conf
 pacman -Syy --noconfirm
-pacman -S yaourt --noconfirm
-
-yaourt --noconfirm -S gnome emacs nvm-git git wget unzip
+pacman --noconfirm -S yaourt gnome
 
 systemctl enable gdm
+
 exit
 
