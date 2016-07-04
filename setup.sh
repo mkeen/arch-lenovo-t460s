@@ -59,13 +59,15 @@ pacman --noconfirm -Sy reflector
 reflector --verbose --country 'United States' -l 200 -p http --sort rate --save /etc/pacman.d/mirrorlist
 
 # Pacstrap
-pacstrap /mnt base base-devel
+pacstrap /mnt base base-devel pam_mount
 genfstab /mnt >> /mnt/etc/fstab
 
 # Skel files
 cp skel/etc/crypttab /mnt/etc
-#cp skel/etc/pam.d/gdm-password /mnt/etc/pam.d
-#cp skel/etc/pam.d/system-auth /mnt/etc/pam.d
+cp skel/etc/security/pam_mount.conf.xml /mnt/etc/security
+cp skel/etc/pam.d/login /mnt/etc/pam.d
+cp skel/etc/pam.d/gdm-password /mnt/etc/pam.d
+cp skel/etc/pam.d/system-auth /mnt/etc/pam.d
 cp configure.sh /mnt/etc
 cp skel/etc/mkinitcpio.conf /mnt/etc
 cp skel/etc/sudoers /mnt/etc
