@@ -1,5 +1,5 @@
 # Config
-DISK=sda
+DISK=sda # Apple MBA
 
 # Prep
 timedatectl set-ntp true
@@ -61,6 +61,7 @@ cp configure.sh /mnt/etc
 cp skel/etc/mkinitcpio.conf /mnt/etc
 cp skel/etc/sudoers /mnt/etc
 cp skel/etc/openswap.conf /mnt/etc
+cp skel/etc/modprobe.d/hid_apple.conf /mnt/etc/modprobe.d # Apple MBA
 
 arch-chroot /mnt sh /etc/configure.sh
 

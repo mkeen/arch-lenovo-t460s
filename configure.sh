@@ -1,5 +1,5 @@
 # Config
-DISK=sda
+DISK=sda # Apple MBA
 
 # Locale
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
@@ -37,7 +37,7 @@ pacman -Syy --noconfirm
 pacman --noconfirm -S yaourt gnome
 
 su mkeen --command "yaourt --noconfirm -S mkinitcpio-openswap"
-su mkeen --command "yaourt --noconfirm -S broadcom-wl"
+su mkeen --command "yaourt --noconfirm -S broadcom-wl" # Apple MBA
 
 mkinitcpio -p linux
 
