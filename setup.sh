@@ -21,9 +21,6 @@ cryptsetup -v --key-size 256 -c aes-cbc-plain64 -i 2000 -h sha256 --key-file ini
 cryptsetup -v --key-size 256 -c aes-cbc-plain64 -i 2000 -h sha256 --key-file initialkey -l 256 --batch-mode open /dev/${DISK}2 swap
 mkswap /dev/mapper/swap
 
-# Don't reference any keys above this line.
-swapon /dev/mapper/swap
-
 # Encrypted Tmp Partition
 parted /dev/${DISK} --script mkpart primary ext4 10001MiB 20000MiB
 cryptsetup -v --key-size 256 -c aes-cbc-plain64 -i 2000 -h sha256 --key-file initialkey -l 256 --batch-mode luksFormat /dev/${DISK}3
@@ -47,6 +44,7 @@ cryptsetup -v open /dev/${DISK}6 mkeen
 mkfs.ext4 /dev/mapper/mkeen
 
 # Mount All
+swapon /dev/mapper/swap
 mount /dev/${DISK}5 /mnt
 mkdir -p /mnt/boot
 mount /dev/${DISK}1 /mnt/boot
@@ -71,7 +69,6 @@ cp skel/etc/crypttab /mnt/etc
 cp configure.sh /mnt/etc
 cp skel/etc/mkinitcpio.conf /mnt/etc
 cp skel/etc/sudoers /mnt/etc
-cp skel/etc/openswap.conf /mnt/etc
 cp skel/etc/modprobe.d/hid_apple.conf /mnt/etc/modprobe.d # Apple MBA
 
 arch-chroot /mnt sh /etc/configure.sh

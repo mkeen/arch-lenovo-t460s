@@ -18,8 +18,11 @@ efibootmgr
 
 # Create User
 useradd mkeen --no-create-home --password \$1\$o4fUysim\$.ije9dcXJAbmiU.M3OhPg1
+
+# Fix Permissions
 chmod 0440 /etc/sudoers
 chown root /etc/sudoers
+chown mkeen /home/mkeen
 
 # Set Hostname
 echo "resin" > /etc/hostname
@@ -36,7 +39,6 @@ Server = http://repo.archlinux.fr/\$arch
 pacman -Syy --noconfirm
 pacman --noconfirm -S yaourt gnome
 
-su mkeen --command "yaourt --noconfirm -S mkinitcpio-openswap"
 su mkeen --command "yaourt --noconfirm -S broadcom-wl" # Apple MBA
 
 mkinitcpio -p linux
