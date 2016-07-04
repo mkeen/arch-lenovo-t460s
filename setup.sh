@@ -16,6 +16,9 @@ mkfs.fat -F32 /dev/${DISK}1
 
 # Encrypted Swap Partition
 parted /dev/${DISK} --script mkpart primary ext4 513MiB 10000MiB
+cryptsetup -v --key-size 256 -c aes-xts-plain64 -i 2000 -h sha256 --use-urandom --batch-mode luksFormat /dev/${DISK}2
+cryptsetup -v open /dev/${DISK}2 swap
+mkswap /dev/mapper/swap
 
 # Encrypted Tmp Partition
 parted /dev/${DISK} --script mkpart primary ext4 10001MiB 20000MiB
@@ -42,6 +45,9 @@ mkdir -p /mnt/boot
 mount /dev/${DISK}1 /mnt/boot
 mkdir -p /mnt/var
 mount /dev/mapper/var /mnt/var
+mkdir -p /mnt/home/mkeen
+mount /dev/mapper/mkeen /mnt/home/mkeen
+swapon /dev/mapper/swap
 
 # Prepare Mirrors
 pacman --noconfirm -Sy reflector

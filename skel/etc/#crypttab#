@@ -1,0 +1,15 @@
+# crypttab: mappings for encrypted partitions
+#
+# Each mapped device will be created in /dev/mapper, so your /etc/fstab
+# should use the /dev/mapper/<name> paths for encrypted devices.
+#
+# The Arch specific syntax has been deprecated, see crypttab(5) for the
+# new supported syntax.
+#
+# NOTE: Do not list your root (/) partition here, it must be set up
+#       beforehand by the initramfs (/etc/mkinitcpio.conf).
+
+# <name>       <device>                                                  <password>      <options>
+tmp	       /dev/disk/by-id/ata-APPLE_SSD_SD0128F_1442GO418352-part3  /dev/urandom    tmp,cipher=aes-xts-plain64:sha256,size=256
+var            /dev/sda4  
+home           /dev/sda6  
