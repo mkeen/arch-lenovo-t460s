@@ -10,6 +10,7 @@
 #       beforehand by the initramfs (/etc/mkinitcpio.conf).
 
 # <name>       <device>                                                  <password>      <options>
-tmp	       /dev/sda3
+swap           /dev/sda2						 /dev/urandom    swap,aes-cbc-plain64,size=256
+tmp	       /dev/sda3                                                 /dev/urandom    tmp,cipher=aes-cbc-plain64,size=256
 var            /dev/sda4
 mkeen          /dev/sda6

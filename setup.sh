@@ -5,6 +5,7 @@ DISK=sda # Apple MBA
 timedatectl set-ntp true
 pacman -Syy
 pacman --noconfirm -S cryptsetup
+head -c 256 /dev/urandom > initialkey
 
 # Prepare Partitions
 parted /dev/${DISK} --script mklabel gpt
@@ -16,14 +17,17 @@ mkfs.fat -F32 /dev/${DISK}1
 
 # Encrypted Swap Partition
 parted /dev/${DISK} --script mkpart primary ext4 513MiB 10000MiB
-cryptsetup -v --key-size 256 -c aes-xts-plain64 -i 2000 -h sha256 --use-urandom --batch-mode luksFormat /dev/${DISK}2
-cryptsetup -v open /dev/${DISK}2 swap
+cryptsetup -v --key-size 256 -c aes-cbc-plain64 -i 2000 -h sha256 --key-file initialkey -l 256 --batch-mode luksFormat /dev/${DISK}2
+cryptsetup -v --key-size 256 -c aes-cbc-plain64 -i 2000 -h sha256 --key-file initialkey -l 256 --batch-mode open /dev/${DISK}2 swap
 mkswap /dev/mapper/swap
+
+# Don't reference any keys above this line.
+swapon /dev/mapper/swap
 
 # Encrypted Tmp Partition
 parted /dev/${DISK} --script mkpart primary ext4 10001MiB 20000MiB
-cryptsetup -v --key-size 256 -c aes-xts-plain64 -i 2000 -h sha256 --use-urandom --batch-mode luksFormat /dev/${DISK}3
-cryptsetup -v open /dev/${DISK}3 tmp
+cryptsetup -v --key-size 256 -c aes-cbc-plain64 -i 2000 -h sha256 --key-file initialkey -l 256 --batch-mode luksFormat /dev/${DISK}3
+cryptsetup -v --key-size 256 -c aes-cbc-plain64 -i 2000 -h sha256 --key-file initialkey -l 256 --batch-mode open /dev/${DISK}3 tmp
 mkfs.ext4 /dev/mapper/tmp
 
 # Encrypted Var Partition
@@ -50,7 +54,7 @@ mkdir -p /mnt/var
 mount /dev/mapper/var /mnt/var
 mkdir -p /mnt/tmp
 mount /dev/mapper/tmp /mnt/tmp
-swapon /dev/mapper/swap
+mount /dev/mapper/mkeen /mnt/home/mkeen
 
 # Prepare Mirrors
 pacman --noconfirm -Sy reflector
@@ -58,22 +62,17 @@ reflector --verbose --country 'United States' -l 200 -p http --sort rate --save 
 
 # Pacstrap
 pacstrap /mnt base base-devel
-genfstab -U /mnt >> /mnt/etc/fstab
+genfstab /mnt >> /mnt/etc/fstab
 
 # Skel files
-cp skel/etc/unsecure.key /mnt/etc
 cp skel/etc/crypttab /mnt/etc
 #cp skel/etc/pam.d/gdm-password /mnt/etc/pam.d
-cp skel/etc/pam.d/system-auth /mnt/etc/pam.d
+#cp skel/etc/pam.d/system-auth /mnt/etc/pam.d
 cp configure.sh /mnt/etc
 cp skel/etc/mkinitcpio.conf /mnt/etc
 cp skel/etc/sudoers /mnt/etc
 cp skel/etc/openswap.conf /mnt/etc
 cp skel/etc/modprobe.d/hid_apple.conf /mnt/etc/modprobe.d # Apple MBA
-cp skel/usr/local/bin/savepass /mnt/usr/local/bin
-cp skel/usr/local/bin/securemount /mnt/usr/local/bin
-cp skel/usr/local/bin/secureumount /mnt/usr/local/bin
-cp skel/etc/systemd/system/homedir@1000.service /mnt/etc/systemd/system
 
 arch-chroot /mnt sh /etc/configure.sh
 
