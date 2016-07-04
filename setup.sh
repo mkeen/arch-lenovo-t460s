@@ -22,6 +22,9 @@ mkswap /dev/mapper/swap
 
 # Encrypted Tmp Partition
 parted /dev/${DISK} --script mkpart primary ext4 10001MiB 20000MiB
+cryptsetup -v --key-size 256 -c aes-xts-plain64 -i 2000 -h sha256 --use-urandom --batch-mode luksFormat /dev/${DISK}3
+cryptsetup -v open /dev/${DISK}2 tmp
+mkfs.ext4 /dev/mapper/tmp
 
 # Encrypted Var Partition
 parted /dev/${DISK} --script mkpart primary ext4 20001MiB 50000MiB
@@ -45,6 +48,8 @@ mkdir -p /mnt/boot
 mount /dev/${DISK}1 /mnt/boot
 mkdir -p /mnt/var
 mount /dev/mapper/var /mnt/var
+mkdir -p /mnt/tmp
+mount /dev/mapper/tmp /mnt/tmp
 mkdir -p /mnt/home/mkeen
 mount /dev/mapper/mkeen /mnt/home/mkeen
 swapon /dev/mapper/swap

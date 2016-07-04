@@ -10,6 +10,6 @@
 #       beforehand by the initramfs (/etc/mkinitcpio.conf).
 
 # <name>       <device>                                                  <password>      <options>
-tmp	       /dev/disk/by-id/ata-APPLE_SSD_SD0128F_1442GO418352-part3  /dev/urandom    tmp,cipher=aes-xts-plain64:sha256,size=256
-var            /dev/sda4  
-home           /dev/sda6  
+tmp	       /dev/sda3
+var            /dev/sda4
+mkeen          /dev/sda6
