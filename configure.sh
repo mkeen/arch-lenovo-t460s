@@ -37,6 +37,7 @@ pacman -Syy --noconfirm
 pacman --noconfirm -S yaourt gnome
 
 su mkeen --command "yaourt --noconfirm -S mkinitcpio-openswap"
+su mkeen --command "yaourt --noconfirm -S broadcom-wl"
 
 mkinitcpio -p linux
 
