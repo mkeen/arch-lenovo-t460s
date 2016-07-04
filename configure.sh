@@ -42,6 +42,7 @@ su mkeen --command "yaourt --noconfirm -S broadcom-wl" # Apple MBA
 mkinitcpio -p linux
 
 systemctl enable NetworkManager
+systemctl enable homedir@1000.service
 systemctl enable gdm
 
 exit

@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+TARGET=$1
+DEC_DEVICE=$(cat /proc/mounts | grep " $TARGET " | cut -d " " -f 1)
+
+/usr/bin/umount $TARGET
+/usr/bin/cryptsetup close $DEC_DEVICE

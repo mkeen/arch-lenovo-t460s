@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+KEYNAME=$1
+DEVICE=$2
+TARGET=$3
+DEC_DEVICE_NAME=$(/usr/bin/systemd-escape -p `/usr/bin/realpath $DEVICE`)
+DEC_DEVICE=/dev/mapper/$DEC_DEVICE_NAME
+
+/usr/bin/keyctl pipe `/usr/bin/keyctl request user $KEYNAME` | /usr/bin/cryptsetup open $DEVICE $DEC_DEVICE_NAME -d -
+/usr/bin/mount $DEC_DEVICE $TARGET

@@ -1,0 +1,2 @@
+#!/bin/sh
+exec keyctl padd user user:`id -u $PAM_USER` @u

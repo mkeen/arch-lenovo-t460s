@@ -1,0 +1,20 @@
+[Unit]
+Description=Home Directory for %I
+DefaultDependencies=no
+Conflicts=umount.target
+IgnoreOnIsolate=true
+Before=user@%i.service
+Requires=user@%i.service
+BindsTo=dev-disk-by\x2duuid-c139ae70\x2d5861\x2d4084\x2d84b1\x2d7d83f7bb7129.device
+After=dev-disk-by\x2duuid-c139ae70\x2d5861\x2d4084\x2d84b1\x2d7d83f7bb7129.device
+Before=umount.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+TimeoutSec=0
+ExecStart=/usr/local/bin/securemount user:%i /dev/disk/by-uuid/c139ae70-5861-4084-84b1-7d83f7bb7129 /home/xyz
+ExecStop=/usr/local/bin/secureumount /home/xyz
+
+[Install]
+RequiredBy=user@%i.service

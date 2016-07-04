@@ -57,20 +57,23 @@ pacman --noconfirm -Sy reflector
 reflector --verbose --country 'United States' -l 200 -p http --sort rate --save /etc/pacman.d/mirrorlist
 
 # Pacstrap
-pacstrap /mnt base base-devel pam_mount
+pacstrap /mnt base base-devel
 genfstab -U /mnt >> /mnt/etc/fstab
 
 # Skel files
 cp skel/etc/unsecure.key /mnt/etc
 cp skel/etc/crypttab /mnt/etc
-cp skel/etc/security/pam_mount.conf.xml /mnt/etc/security
-cp skel/etc/pam.d/gdm-password /mnt/etc/pam.d
+#cp skel/etc/pam.d/gdm-password /mnt/etc/pam.d
 cp skel/etc/pam.d/system-auth /mnt/etc/pam.d
 cp configure.sh /mnt/etc
 cp skel/etc/mkinitcpio.conf /mnt/etc
 cp skel/etc/sudoers /mnt/etc
 cp skel/etc/openswap.conf /mnt/etc
 cp skel/etc/modprobe.d/hid_apple.conf /mnt/etc/modprobe.d # Apple MBA
+cp skel/usr/local/bin/savepass /mnt/usr/local/bin
+cp skel/usr/local/bin/securemount /mnt/usr/local/bin
+cp skel/usr/local/bin/secureumount /mnt/usr/local/bin
+cp skel/etc/systemd/system/homedir@1000.service /mnt/etc/systemd/system
 
 arch-chroot /mnt sh /etc/configure.sh
 
