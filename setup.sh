@@ -25,7 +25,7 @@ mkswap /dev/mapper/swap
 parted /dev/${DISK} --script mkpart primary ext4 10001MiB 20000MiB
 cryptsetup -v --key-size 256 -c aes-cbc-plain64 -i 2000 -h sha256 --key-file initialkey -l 256 --batch-mode luksFormat /dev/${DISK}3
 cryptsetup -v --key-size 256 -c aes-cbc-plain64 -i 2000 -h sha256 --key-file initialkey -l 256 --batch-mode open /dev/${DISK}3 tmp
-mkfs.ext4 /dev/mapper/tmp
+mkfs.ext2 /dev/mapper/tmp
 
 # Encrypted Var Partition
 parted /dev/${DISK} --script mkpart primary ext4 20001MiB 50000MiB

@@ -22,6 +22,7 @@ useradd mkeen --no-create-home --password \$1\$o4fUysim\$.ije9dcXJAbmiU.M3OhPg1
 # Fix Permissions
 chmod 0440 /etc/sudoers
 chown root /etc/sudoers
+mkdir -p /home/mkeen
 chown mkeen /home/mkeen
 
 # Set Hostname
