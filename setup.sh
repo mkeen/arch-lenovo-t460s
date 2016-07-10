@@ -71,7 +71,10 @@ cp skel/etc/pam.d/system-auth /mnt/etc/pam.d
 cp configure.sh /mnt/etc
 cp skel/etc/mkinitcpio.conf /mnt/etc
 cp skel/etc/sudoers /mnt/etc
-cp skel/etc/modprobe.d/hid_apple.conf /mnt/etc/modprobe.d # Apple MBA
+cp skel/etc/modprobe.d/hid_apple.conf /mnt/etc/modprobe.d # Apple MBA, tilde support
+
+# Temporary user configuration executable
+cp skel/home/mkeen/user.sh /mnt/root
 
 arch-chroot /mnt sh /etc/configure.sh
 

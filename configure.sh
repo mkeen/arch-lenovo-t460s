@@ -32,20 +32,37 @@ echo "resin" > /etc/hostname
 passwd
 
 # Install Base Customizations
+pacman -S gnome --noconfirm
 echo "
 [archlinuxfr]
 SigLevel = Never
 Server = http://repo.archlinux.fr/\$arch
+[MEGAsync]
+SigLevel = Optional TrustAll
+Server = http://mega.nz/linux/MEGAsync/Arch_Extra/$arch
 " >> /etc/pacman.conf
 pacman -Syy --noconfirm
-pacman --noconfirm -S yaourt gnome
+pacman --noconfirm -S yaourt megasync
 
 su mkeen --command "yaourt --noconfirm -S broadcom-wl" # Apple MBA
 
 mkinitcpio -p linux
 
+# Polish Everything
+# - Cursor
+yaourt -S xcursor-pinux
+sudo mkdir -p /etc/dconf/db/gdm.d/
+touch /etc/dconf/db/gdm.d/10-cursor-settings
+echo "[org/gnome/desktop/interface]
+cursor-theme='PArch-24'" > /etc/dconf/db/gdm.d/10-cursor-settings
+dconf update
+
 systemctl enable NetworkManager
 systemctl enable gdm
 
-exit
+mv /root/user.sh /home/mkeen/user.sh
+chmod 777 user.sh
+su mkeen --command /home/mkeen/user.sh
+rm -rf /home/user.sh
 
+exit
