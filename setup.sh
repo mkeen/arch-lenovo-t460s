@@ -52,7 +52,6 @@ mkdir -p /mnt/var
 mount /dev/mapper/var /mnt/var
 mkdir -p /mnt/tmp
 mount /dev/mapper/tmp /mnt/tmp
-mount /dev/mapper/mkeen /mnt/home/mkeen
 
 # Prepare Mirrors
 pacman --noconfirm -Sy reflector
