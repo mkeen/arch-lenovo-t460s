@@ -74,7 +74,7 @@ cp skel/etc/modprobe.d/hid_apple.conf /mnt/etc/modprobe.d # Apple MBA, tilde sup
 
 # Temporary user configuration executable
 cp skel/home/mkeen/user.sh /mnt/root
-
 arch-chroot /mnt sh /etc/configure.sh
+rm -rf /mnt/etc/configure.sh
 
 reboot

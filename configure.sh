@@ -58,11 +58,11 @@ cursor-theme='PArch-24'" > /etc/dconf/db/gdm.d/10-cursor-settings
 dconf update
 
 systemctl enable NetworkManager
-systemctl enable gdm
+#systemctl enable gdm
 
 mv /root/user.sh /home/mkeen/user.sh
 chmod 777 user.sh
-su mkeen --command /home/mkeen/user.sh
-rm -rf /home/user.sh
+su mkeen --command user.sh
+rm -rf /home/mkeen/user.sh
 
 exit
