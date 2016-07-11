@@ -7,7 +7,7 @@ locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 # Time
-tzselect
+timedatectl set-timezone America/New_York
 ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
 hwclock --systohc --utc
 
@@ -37,9 +37,10 @@ echo "
 [archlinuxfr]
 SigLevel = Never
 Server = http://repo.archlinux.fr/\$arch
-[MEGAsync]
+
+[DEB_Arch_Extra]
 SigLevel = Optional TrustAll
-Server = http://mega.nz/linux/MEGAsync/Arch_Extra/$arch
+Server = http://mega.nz/linux/MEGAsync/Arch_Extra/\$arch
 " >> /etc/pacman.conf
 pacman -Syy --noconfirm
 pacman --noconfirm -S yaourt megasync
