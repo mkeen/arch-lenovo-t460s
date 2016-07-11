@@ -51,7 +51,7 @@ mkinitcpio -p linux
 
 # Polish Everything
 # - Cursor
-yaourt -S xcursor-pinux
+yaourt --noconfirm -S xcursor-pinux
 sudo mkdir -p /etc/dconf/db/gdm.d/
 touch /etc/dconf/db/gdm.d/10-cursor-settings
 echo "[org/gnome/desktop/interface]
