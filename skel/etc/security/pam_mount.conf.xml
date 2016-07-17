@@ -41,7 +41,7 @@
 		
 <volume user="mkeen" fstype="crypt" path="/dev/sda6" mountpoint="/home/mkeen" options="fsck,noatime" />
 <mkmountpoint enable="1" remove="true" />
-<msg-authpw>Password</msg-authpw>
+<msg-authpw>Password: </msg-authpw>
 
 </pam_mount>
 
