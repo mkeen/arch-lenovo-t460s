@@ -5,43 +5,16 @@
 -->
 
 <pam_mount>
-
-                <!-- debug should come before everything else,
-                since this file is still processed in a single pass
-                from top-to-bottom -->
-
-<debug enable="0" />
-
-                <!-- Volume definitions -->
-
-
-                <!-- pam_mount parameters: General tunables -->
-
-<!--
-<luserconf name=".pam_mount.conf.xml" />
--->
-
-<!-- Note that commenting out mntoptions will give you the defaults.
-     You will need to explicitly initialize it with the empty string
-     to reset the defaults to nothing. -->
-<mntoptions allow="nosuid,nodev,loop,encryption,fsck,nonempty,allow_root,allow_other" />
-<!--
-<mntoptions deny="suid,dev" />
-<mntoptions allow="*" />
-<mntoptions deny="*" />
--->
-<mntoptions require="nosuid,nodev" />
-
-<!-- requires ofl from hxtools to be present -->
-<logout wait="0" hup="no" term="no" kill="no" />
-
-
-                <!-- pam_mount parameters: Volume-related -->
-
-		
-<volume user="mkeen" fstype="crypt" path="/dev/sda6" mountpoint="/home/mkeen" options="fsck,noatime" />
-<mkmountpoint enable="1" remove="true" />
-<msg-authpw>Password: </msg-authpw>
-
+  <debug enable="0" />
+  
+  <mntoptions allow="nosuid,nodev,loop,encryption,fsck,nonempty,allow_root,allow_other" />
+  <mntoptions require="nosuid,nodev" />
+  
+  <!-- requires ofl from hxtools to be present -->
+  <logout wait="0" hup="no" term="no" kill="no" />
+  
+  <volume user="mkeen" fstype="crypt" path="/dev/sda6" mountpoint="/home/mkeen" options="fsck,noatime" />
+  <mkmountpoint enable="1" remove="true" />
+  <msg-authpw>Password: </msg-authpw>
 </pam_mount>
 
